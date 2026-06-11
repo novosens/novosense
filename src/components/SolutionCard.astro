@@ -1,0 +1,17 @@
+---
+type Solution = {
+  title: string;
+  description: string;
+};
+
+type Props = {
+  solution: Solution;
+};
+
+const { solution } = Astro.props;
+---
+
+<article class="solution-card">
+  <h3>{solution.title}</h3>
+  <p>{solution.description}</p>
+</article>

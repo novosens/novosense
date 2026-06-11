@@ -1,0 +1,143 @@
+/* Base typography */
+
+html {
+  font-size: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  line-height: 1.5;
+}
+
+/* Headings */
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--color-text);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+h1 {
+  max-width: 12ch;
+  margin-block: 0 var(--space-4);
+  font-size: clamp(3rem, 8vw, 6rem);
+}
+
+h2 {
+  max-width: 16ch;
+  margin-block: 0 var(--space-4);
+  font-size: clamp(2rem, 5vw, 3.75rem);
+}
+
+h3 {
+  margin-block: 0 var(--space-3);
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+}
+
+h4 {
+  margin-block: 0 var(--space-2);
+  font-size: 1.125rem;
+}
+
+/* Paragraphs */
+
+p {
+  margin-block: 0 var(--space-4);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+/* Lists */
+
+ul,
+ol {
+  margin-block: 0 var(--space-4);
+  padding-inline-start: 1.25rem;
+}
+
+li + li {
+  margin-top: var(--space-2);
+}
+
+/* Inline text */
+
+strong {
+  font-weight: 700;
+}
+
+small {
+  font-size: 0.875rem;
+}
+
+/* Links inside prose */
+
+p a,
+li a {
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+p a:hover,
+li a:hover {
+  text-decoration-thickness: 0.12em;
+}
+
+/* Prose wrapper for legal/privacy/contact text-heavy pages */
+
+.prose {
+  max-width: var(--measure);
+}
+
+.prose > * + * {
+  margin-top: var(--space-4);
+}
+
+.prose h1,
+.prose h2,
+.prose h3 {
+  max-width: none;
+}
+
+.prose h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.prose h2 {
+  margin-top: var(--space-12);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.prose h3 {
+  margin-top: var(--space-8);
+}
+
+.prose p,
+.prose li {
+  color: var(--color-muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* Utility text classes */
+
+.lede {
+  max-width: var(--measure);
+  color: var(--color-muted);
+  font-size: clamp(1.125rem, 2vw, 1.35rem);
+  line-height: 1.6;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

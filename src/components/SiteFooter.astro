@@ -1,0 +1,17 @@
+---
+import { company } from "../content/company";
+---
+
+<footer class="site-footer">
+  <p>
+    © {new Date().getFullYear()} {company.legalName ?? company.name}
+  </p>
+
+  <nav aria-label="Footer navigation">
+    <div class="footer-links">
+      <a href="/privacy/">Privacy</a>
+      <a href="/legal/">Legal</a>
+      <a href={`mailto:${company.email}`}>{company.email}</a>
+    </div>
+  </nav>
+</footer>

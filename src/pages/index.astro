@@ -1,17 +1,64 @@
 ---
-
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import SolutionCard from "../components/SolutionCard.astro";
+import { solutions } from "../content/solutions";
+import { company } from "../content/company";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title={`${company.name} — Practical software systems`}
+  description="We build reliable software systems for teams that need product velocity without infrastructure chaos."
+>
+  <main>
+    <section class="section hero">
+      <Container>
+        <div class="stack">
+          <p class="eyebrow">Software engineering company</p>
+
+          <h1>We build reliable software systems.</h1>
+
+          <p class="lede">
+            We help teams design, build, and operate web products, internal tools,
+            and infrastructure with pragmatic engineering.
+          </p>
+
+          <div class="actions">
+            <a class="button" href="/contact/">Contact us</a>
+            <a class="button button-secondary" href="/solutions/">See solutions</a>
+          </div>
+        </div>
+      </Container>
+    </section>
+
+    <section class="section">
+      <Container>
+        <div class="section-heading">
+          <p class="eyebrow">What we do</p>
+          <h2>Engineering support for serious software work.</h2>
+        </div>
+
+        <div class="card-grid">
+          {solutions.map((solution) => (
+            <SolutionCard solution={solution} />
+          ))}
+        </div>
+      </Container>
+    </section>
+
+    <section class="section">
+      <Container>
+        <div class="callout">
+          <h2>Have a system to build, stabilize, or rethink?</h2>
+          <p>
+            Tell us what you are working on. We will respond directly and keep
+            the conversation practical.
+          </p>
+          <a class="button" href={`mailto:${company.email}`}>
+            {company.email}
+          </a>
+        </div>
+      </Container>
+    </section>
+  </main>
+</BaseLayout>
