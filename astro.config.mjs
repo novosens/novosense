@@ -3,7 +3,6 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://novosens.github.io",
-  base: "/novosense",
+  site: "https://novosense.cz",
   output: "static"
 });
