@@ -1,40 +1,114 @@
 ---
-import SiteHeader from "../components/SiteHeader.astro";
-import SiteFooter from "../components/SiteFooter.astro";
-import "../styles/global.css";
-
-type Props = {
-  title: string;
-  description: string;
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import Consent from '../components/Consent.astro';
+import { company } from '../content/company';
+import { copy } from '../content/site';
+import { href, locales, type Locale, type Page } from '../lib/routes';
+import '../styles/global.css';
+interface Props {
+  locale: Locale;
+  page: Page;
+  notFound?: boolean;
+}
+const { locale, page, notFound = false } = Astro.props;
+const t = copy[locale];
+const title = notFound
+  ? '404 — NOVOSense'
+  : `${t.meta[page].title} | NOVOSense`;
+const canonical = new URL(href(page, locale), Astro.site).href;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: company.name,
+  legalName: company.legalName,
+  url: Astro.site?.href,
+  logo: new URL('/favicon.svg', Astro.site).href,
+  email: company.email,
+  telephone: company.phone,
+  identifier: company.companyId,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Michalská 1801',
+    postalCode: '686 03',
+    addressLocality: 'Staré Město',
+    addressCountry: 'CZ',
+  },
 };
-
-const { title, description } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    <meta name="theme-color" content="#f8f9fb" />
     <title>{title}</title>
-    <meta name="description" content={description} />
-
+    <meta name="description" content={t.meta[page].description} />
+    {notFound ? (
+      <meta name="robots" content="noindex" />
+    ) : (
+      <>
+        <link rel="canonical" href={canonical} />
+        {locales.map((lang) => (
+          <link
+            rel="alternate"
+            hreflang={lang}
+            href={new URL(href(page, lang), Astro.site).href}
+          />
+        ))}
+        <link
+          rel="alternate"
+          hreflang="x-default"
+          href={new URL(href(page, 'cs'), Astro.site).href}
+        />
+      </>
+    )}
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={t.meta[page].description} />
     <meta property="og:type" content="website" />
-
-    <link rel="icon" href="/favicon.svg" />
+    <meta property="og:site_name" content="NOVOSense" />
+    <meta property="og:locale" content={locale === 'cs' ? 'cs_CZ' : 'en_GB'} />
+    <meta
+      property="og:locale:alternate"
+      content={locale === 'cs' ? 'en_GB' : 'cs_CZ'}
+    />
+    {!notFound && <meta property="og:url" content={canonical} />}
+    <meta
+      property="og:image"
+      content={new URL(`/social-${locale}.png`, Astro.site).href}
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content={`NOVOSense — ${t.meta.home.title}`}
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(schema).replace(/</g, '\\u003c')}
+    ></script>
   </head>
-
-  <body>
-    <a class="skip-link" href="#content">Skip to content</a>
-    <SiteHeader />
-
-    <div id="content">
+  <body
+    class:list={[
+      page === 'datahub'
+        ? 'theme-data'
+        : page === 'tickets'
+          ? 'theme-tickets'
+          : 'theme-company',
+    ]}
+  >
+    <a class="skip-link" href="#content">
+      {t.skip}
+    </a>
+    <SiteHeader locale={locale} page={page} />
+    <main id="content" tabindex="-1">
       <slot />
-    </div>
-
-    <SiteFooter />
+    </main>
+    <SiteFooter locale={locale} />
+    <Consent locale={locale} />
   </body>
 </html>

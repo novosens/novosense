@@ -1,0 +1,90 @@
+min_version = "2026.8.6"
+
+[settings]
+lockfile = true
+
+[tool_config]
+locked = true
+
+[tool_alias]
+pnpm = "npm:pnpm"
+
+[tools]
+actionlint = "1.7.12"
+node = "24.19.0"
+pnpm = { version = "10.34.5", trust_policy_excludes = ["pnpm@10.34.5"] }
+
+[tasks.setup]
+description = "Install the locked project dependencies"
+run = "pnpm install --frozen-lockfile"
+
+[tasks."deps:update"]
+description = "Synchronize the dependency lockfile after editing package.json"
+run = "pnpm install --no-frozen-lockfile"
+
+[tasks.dev]
+description = "Start the Astro development server"
+run = "pnpm exec astro dev"
+
+[tasks.build]
+description = "Build the production static site"
+run = "pnpm exec astro build"
+
+[tasks.preview]
+description = "Preview the production build"
+run = "pnpm exec astro preview --host 127.0.0.1 --port 4321"
+
+[tasks."preview:analytics"]
+description = "Serve the analytics-enabled browser-test fixture"
+run = "pnpm exec astro preview --outDir dist-analytics --host 127.0.0.1 --port 4322"
+
+[tasks.check]
+description = "Check Astro and TypeScript types"
+run = "pnpm exec astro check"
+
+[tasks."check:output"]
+description = "Verify generated pages, metadata, local links and assets"
+run = "node scripts/check-output.mjs"
+
+[tasks."check:workflow"]
+description = "Validate the GitHub Actions workflow"
+run = "actionlint"
+
+[tasks.format]
+description = "Format source files"
+run = "pnpm exec prettier --write ."
+
+[tasks."format:check"]
+description = "Check source formatting"
+run = "pnpm exec prettier --check ."
+
+[tasks."browser:install"]
+description = "Install Chromium for browser verification"
+run = "pnpm exec playwright install chromium"
+
+[tasks."browser:install:ci"]
+description = "Install Chromium and system dependencies in CI"
+run = "pnpm exec playwright install --with-deps chromium"
+
+[tasks."build:test"]
+description = "Build disabled and enabled analytics test fixtures"
+run = [
+  "PUBLIC_ANALYTICS_ENABLED=false pnpm exec astro build",
+  "PUBLIC_ANALYTICS_ENABLED=true PUBLIC_GA_MEASUREMENT_ID=G-NOVOSENSETEST pnpm exec astro build --outDir dist-analytics",
+]
+
+[tasks."test:browser"]
+description = "Run browser and consent tests against existing test builds"
+run = "pnpm exec playwright test"
+
+[tasks.test]
+description = "Build fixtures and verify output, accessibility and browser behavior"
+run = ["mise run build:test", "mise run check:output", "mise run test:browser"]
+
+[tasks."check:full"]
+description = "Run all static and browser checks"
+run = ["mise run check", "mise run format:check", "mise run check:workflow", "mise run test"]
+
+[tasks."ci:verify"]
+description = "Run the complete CI verification suite"
+run = "mise run check:full"

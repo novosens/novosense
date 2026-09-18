@@ -1,0 +1,68 @@
+---
+import { copy } from '../content/site';
+import { href, otherLocale, type Locale, type Page } from '../lib/routes';
+interface Props {
+  locale: Locale;
+  page: Page;
+}
+const { locale, page } = Astro.props;
+const t = copy[locale];
+const alternate = otherLocale(locale);
+const active = (key: Page) =>
+  page === key || (key === 'products' && ['datahub', 'tickets'].includes(page));
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="wordmark" href={href('home', locale)} aria-label="NOVOSense">
+      <img src="/favicon.svg" width="33" height="38" alt="" />
+      <span>
+        NOVO<span class="wordmark-light">Sense</span>
+      </span>
+    </a>
+    <nav
+      class="desktop-nav"
+      aria-label={locale === 'cs' ? 'Hlavní navigace' : 'Main navigation'}
+    >
+      {(['products', 'about', 'contact'] as Page[]).map((key) => (
+        <a
+          href={href(key, locale)}
+          aria-current={page === key ? 'page' : undefined}
+          class:list={{ active: active(key) }}
+        >
+          {t.nav[key]}
+        </a>
+      ))}
+    </nav>
+    <div class="header-tools">
+      <a
+        class="language-switch"
+        href={href(page, alternate)}
+        lang={alternate}
+        hreflang={alternate}
+        aria-label={`${t.language}: ${alternate === 'cs' ? 'Čeština' : 'English'}`}
+      >
+        {alternate === 'cs' ? 'CS' : 'EN'}
+      </a>
+      <details class="mobile-nav">
+        <summary>
+          {t.menu} <span aria-hidden="true">☰</span>
+        </summary>
+        <nav
+          aria-label={
+            locale === 'cs' ? 'Mobilní navigace' : 'Mobile navigation'
+          }
+        >
+          {(['home', 'products', 'about', 'contact'] as Page[]).map((key) => (
+            <a
+              href={href(key, locale)}
+              aria-current={page === key ? 'page' : undefined}
+            >
+              {t.nav[key]}
+            </a>
+          ))}
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>

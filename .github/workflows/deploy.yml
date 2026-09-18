@@ -25,22 +25,23 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
+      - name: Setup locked development tools
+        uses: jdx/mise-action@9e7f7633ff6f6d6048a9418a68d48f288f50eb14 # v4.2.3
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: mise run setup
 
-      - name: Build with Astro
-        run: pnpm build
+      - name: Install browser for verification
+        run: mise run browser:install:ci
+
+      - name: Verify both languages and analytics consent
+        run: mise run ci:verify
+
+      - name: Build production site
+        run: mise run build
+        env:
+          PUBLIC_ANALYTICS_ENABLED: ${{ vars.PUBLIC_ANALYTICS_ENABLED || 'false' }}
+          PUBLIC_GA_MEASUREMENT_ID: ${{ vars.PUBLIC_GA_MEASUREMENT_ID }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

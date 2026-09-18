@@ -1,0 +1,222 @@
+---
+import { company } from '../content/company';
+import { copy } from '../content/site';
+import { href, type Locale } from '../lib/routes';
+import { analytics } from '../lib/analytics';
+interface Props {
+  locale: Locale;
+  page: 'legal' | 'privacy' | 'cookies';
+}
+const { locale, page } = Astro.props;
+const cs = locale === 'cs';
+---
+
+{page === 'legal' && (
+  <>
+    <p>
+      {cs
+        ? 'Tento web provozuje společnost NOVOSense s.r.o. Níže najdete její identifikační a kontaktní údaje.'
+        : 'This website is operated by NOVOSense s.r.o. Its identification and contact details are listed below.'}
+    </p>
+    <dl>
+      <dt>{cs ? 'Obchodní firma' : 'Legal name'}</dt>
+      <dd>{company.legalName}</dd>
+      <dt>{cs ? 'Sídlo' : 'Registered office'}</dt>
+      <dd>
+        {company.registeredOffice}, {cs ? 'Česká republika' : 'Czech Republic'}
+      </dd>
+      <dt>{cs ? 'IČO' : 'Company ID'}</dt>
+      <dd>{company.companyId}</dd>
+      <dt>
+        {cs ? 'Zápis v obchodním rejstříku' : 'Commercial Register entry'}
+      </dt>
+      <dd>
+        {cs
+          ? 'Oddíl C, vložka 152325, Krajský soud v Brně.'
+          : 'Section C, File 152325, Regional Court in Brno, Czech Republic.'}
+      </dd>
+      <dt>{cs ? 'Kontakt' : 'Contact'}</dt>
+      <dd>
+        <a href={`mailto:${company.email}`}>{company.email}</a>
+        <br />
+        <a href={company.phoneHref}>{company.phone}</a>
+      </dd>
+    </dl>
+    <h2>{cs ? 'Účel webu' : 'Purpose of this website'}</h2>
+    <p>
+      {cs
+        ? 'Web představuje naše produkty a služby a umožňuje nás kontaktovat. Neprobíhá na něm prodej vstupenek, platba ani uzavírání smluv. Konkrétní rozsah spolupráce, dostupnost funkcí a obchodní podmínky se domlouvají samostatně.'
+        : 'This website introduces our products and services and lets you contact us. It does not sell tickets, process payments or conclude contracts. The scope of any engagement, feature availability and commercial terms are agreed separately.'}
+    </p>
+    <h2>
+      {cs ? 'Produkty a ilustrační obsah' : 'Products and illustrative content'}
+    </h2>
+    <p>
+      {cs
+        ? 'Ukázky rozhraní a údaje v ilustracích slouží k představení principu produktů. Nejde o živá provozní data ani nabídku konkrétní akce. Podmínky používání produktů a jejich vlastní informace o ochraně osobních údajů jsou oddělené od tohoto firemního webu.'
+        : 'Interface illustrations and their sample data explain how the products work. They are not live operational data or an offer for a specific event. Product terms and their privacy notices are separate from this corporate website.'}
+    </p>
+    <h2>{cs ? 'Obsah a práva' : 'Content and rights'}</h2>
+    <p>
+      {cs
+        ? 'Texty, grafika a označení na webu mohou být chráněny autorskými právy nebo jinými právy jejich vlastníků. Pro použití nad rámec zákonných oprávnění nás prosím kontaktujte. Názvy cizích služeb patří jejich příslušným vlastníkům.'
+        : 'Text, graphics and marks on this website may be protected by copyright or other rights held by their owners. Please contact us for uses beyond statutory permissions. Third-party service names belong to their respective owners.'}
+    </p>
+    <h2>{cs ? 'Osobní údaje' : 'Personal data'}</h2>
+    <p>
+      <a href={href('privacy', locale)}>{copy[locale].nav.privacy}</a> ·{' '}
+      <a href={href('cookies', locale)}>{copy[locale].nav.cookies}</a>
+    </p>
+  </>
+)}
+{page === 'privacy' && (
+  <>
+    <p>
+      {cs
+        ? 'Tyto informace se týkají firemního webu novosense.cz a prvního kontaktu s námi. Zpracování údajů uvnitř produktů DataHub a Dáme lístky se řídí jejich samostatnými informacemi a konkrétními vztahy se zákazníky.'
+        : 'This notice covers the novosense.cz corporate website and initial contact with us. Data processing within DataHub and Dáme lístky is covered by their separate notices and the relevant customer relationships.'}
+    </p>
+    <h2>{cs ? 'Kdo odpovídá za zpracování' : 'Who is responsible'}</h2>
+    <p>
+      {company.legalName}, {cs ? 'IČO' : 'Company ID'} {company.companyId},{' '}
+      {company.registeredOffice}.{' '}
+      {cs
+        ? 'S otázkami nebo žádostí o uplatnění práv se obraťte na'
+        : 'For questions or to exercise your rights, contact'}{' '}
+      <a href={`mailto:${company.email}`}>{company.email}</a>.
+    </p>
+    <h2>{cs ? 'Když nás kontaktujete' : 'When you contact us'}</h2>
+    <p>
+      {cs
+        ? 'Při komunikaci e-mailem nebo telefonem zpracováváme údaje, které nám sdělíte: typicky jméno, kontaktní údaje, firmu a obsah dotazu. Používáme je pro vyřízení poptávky a navazující komunikaci. Právním základem je provedení kroků před uzavřením smlouvy na vaši žádost (čl. 6 odst. 1 písm. b GDPR), nebo náš oprávněný zájem na vyřízení ostatní obchodní komunikace (čl. 6 odst. 1 písm. f GDPR).'
+        : 'When you contact us by email or telephone, we process the information you share, typically your name, contact details, company and inquiry. We use it to respond and continue the conversation. The legal basis is taking steps at your request before entering into a contract (GDPR Article 6(1)(b)), or our legitimate interest in handling other business correspondence (Article 6(1)(f)).'}
+    </p>
+    <p>
+      {cs
+        ? 'Údaje uchováváme po dobu potřebnou k vyřízení dotazu a související komunikace, případně po dobu nutnou ke splnění právních povinností nebo ochraně právních nároků. Doba závisí na obsahu a výsledku komunikace. Údaje mohou v nezbytném rozsahu zpracovávat poskytovatelé komunikačních a IT služeb, které používáme k vyřízení vašeho dotazu.'
+        : 'We retain this information for as long as needed to handle the inquiry and related correspondence, and where necessary to meet legal obligations or establish or defend legal claims. The period depends on the content and outcome of the correspondence. Providers of communication and IT services used to handle your inquiry may process the information to the extent necessary.'}
+    </p>
+    <h2>{cs ? 'Návštěva webu a hosting' : 'Website visits and hosting'}</h2>
+    <p>
+      {cs
+        ? 'Web je statický a hostovaný na GitHub Pages. GitHub uvádí, že při návštěvě ukládá IP adresu návštěvníka pro bezpečnostní účely, a to i bez přihlášení ke GitHubu. Nejde o analytiku návštěvnosti, kterou zapínáme na základě vašeho souhlasu.'
+        : 'The website is static and hosted on GitHub Pages. GitHub states that it logs visitors’ IP addresses for security, even when they are not signed in. This is separate from the audience analytics we enable with your consent.'}{' '}
+      <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection">
+        {cs ? 'Informace o hostingu' : 'Hosting information'}
+      </a>{' '}
+      ·{' '}
+      <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">
+        {cs ? 'Ochrana soukromí u GitHubu' : 'GitHub privacy statement'}
+      </a>
+      .
+    </p>
+    <h2>{cs ? 'Volitelná analytika' : 'Optional analytics'}</h2>
+    {analytics.enabled ? (
+      <>
+        <p>
+          {cs
+            ? 'Po vašem souhlasu používáme Google Analytics 4 od společnosti Google Ireland Limited k porozumění návštěvnosti webu. Zpracovávané informace mohou zahrnovat navštívené stránky, základní údaje o zařízení a prohlížeči, zdroj návštěvy a identifikátory cookies. Google při přenosu přijímá také IP adresu. Nezasíláme obsah vaší komunikace, telefonní číslo ani e-mailovou adresu.'
+            : 'With your consent, we use Google Analytics 4 from Google Ireland Limited to understand website traffic. Information may include pages visited, basic device and browser details, referral source and cookie identifiers. Google also receives the IP address during transmission. We do not send the content of your correspondence, phone number or email address.'}
+        </p>
+        <p>
+          {cs
+            ? 'Právním základem je váš souhlas (čl. 6 odst. 1 písm. a GDPR). Analytické skripty se bez něj nenačítají. Reklamní personalizaci nepovolujeme. Souhlas můžete kdykoli odvolat v nastavení cookies; tím není dotčena zákonnost předchozího zpracování.'
+            : 'The legal basis is your consent (GDPR Article 6(1)(a)). Analytics scripts do not load without it. We do not enable advertising personalization. You can withdraw consent in cookie settings at any time without affecting the lawfulness of earlier processing.'}
+        </p>
+        <p>
+          {cs
+            ? 'Google může údaje zpracovávat i mimo EHP, včetně USA. Informace o příjemcích, době uchování a použitých mechanismech přenosu najdete v zásadách společnosti Google. Pro uplatnění práv ve vztahu k analytice tohoto webu nás můžete kontaktovat.'
+            : 'Google may process data outside the EEA, including in the United States. See Google’s policies for information about recipients, retention and transfer mechanisms. You can contact us to exercise your rights concerning this website’s analytics.'}{' '}
+          <a href="https://policies.google.com/privacy">
+            {cs ? 'Zásady ochrany soukromí Google' : 'Google privacy policy'}
+          </a>
+          .
+        </p>
+      </>
+    ) : (
+      <p class="notice">
+        {cs
+          ? 'Google Analytics na tomto webu momentálně není zapnuté. Nenačítáme jeho skripty a neodesíláme mu údaje o návštěvnosti. Pokud analytiku v budoucnu zapneme, nejprve vás požádáme o souhlas a aktualizujeme tyto informace.'
+          : 'Google Analytics is currently disabled on this website. We do not load its scripts or send it visit data. If we enable analytics in the future, we will first request your consent and update this notice.'}
+      </p>
+    )}
+    <h2>{cs ? 'Vaše práva' : 'Your rights'}</h2>
+    <p>
+      {cs
+        ? 'Za podmínek GDPR máte právo na přístup k údajům, opravu, výmaz, omezení zpracování a přenositelnost. Proti zpracování založenému na oprávněném zájmu můžete vznést námitku. Souhlas lze kdykoli odvolat. Poskytnutí údajů pro běžný dotaz je dobrovolné; bez kontaktních údajů vám nemusíme být schopni odpovědět. Na tomto webu neprovádíme automatizované rozhodování s právními nebo obdobně významnými účinky.'
+        : 'Subject to the GDPR, you have rights of access, rectification, erasure, restriction and portability. You may object to processing based on legitimate interests and withdraw consent at any time. Providing information for a general inquiry is voluntary; without contact details we may be unable to reply. This website does not carry out automated decision-making with legal or similarly significant effects.'}
+    </p>
+    <p>
+      {cs
+        ? 'Máte také právo podat stížnost u'
+        : 'You also have the right to lodge a complaint with the'}{' '}
+      <a href="https://uoou.gov.cz/">
+        {cs
+          ? 'Úřadu pro ochranu osobních údajů'
+          : 'Czech Office for Personal Data Protection'}
+      </a>
+      {cs
+        ? ', případně u příslušného dozorového úřadu v místě vašeho obvyklého bydliště, zaměstnání nebo údajného porušení.'
+        : ', or the competent supervisory authority where you habitually live, work or believe an infringement occurred.'}
+    </p>
+  </>
+)}
+{page === 'cookies' && (
+  <>
+    <p>
+      {cs
+        ? 'Cookies jsou malé soubory ukládané prohlížečem. Podobným úložištěm je localStorage. Níže popisujeme, jak je tento web používá.'
+        : 'Cookies are small files stored by your browser. LocalStorage is another form of browser storage. Here is how this website uses them.'}
+    </p>
+    <h2>{cs ? 'Základní fungování webu' : 'Core website functionality'}</h2>
+    <p>
+      {cs
+        ? 'Obsah i přepínání jazyka fungují bez analytických cookies. Jazyk vyplývá z adresy stránky; pro jeho zapamatování nepoužíváme cookies. Web neobsahuje vložené mapy, videa ani externě načítaná písma.'
+        : 'Content and language switching work without analytics cookies. The page address determines the language; we do not use cookies to remember it. The site contains no embedded maps, videos or remotely loaded fonts.'}
+    </p>
+    <h2>{cs ? 'Uložení vaší volby' : 'Remembering your choice'}</h2>
+    <p>
+      {cs
+        ? 'Když je dostupná volitelná analytika a vy učiníte volbu, ukládáme v localStorage položku novosense.analytics-consent.v1. Obsahuje pouze volbu a čas jejího vypršení, nejvýše za šest měsíců. Slouží k respektování vašeho rozhodnutí a neposíláme ji jako analytickou událost. Po vypršení se znovu zeptáme. Pokud prohlížeč ukládání blokuje, volba platí jen do opuštění stránky.'
+        : 'When optional analytics is available and you make a choice, we store novosense.analytics-consent.v1 in localStorage. It contains only your choice and its expiry time, at most six months later. It is used to respect your decision and is not sent as an analytics event. After expiry we ask again. If your browser blocks storage, the choice lasts only until you leave the page.'}
+    </p>
+    <h2>Google Analytics</h2>
+    {analytics.enabled ? (
+      <>
+        <p>
+          {cs
+            ? 'Analytika je dostupná, ale spustí se pouze po vašem souhlasu. Google Analytics může používat cookies _ga a _ga_<identifikátor> pro rozlišení návštěv a relací. Na tomto webu nastavujeme jejich platnost na nejvýše šest měsíců bez průběžného prodlužování. Odmítnutí nijak neomezuje obsah webu.'
+            : 'Analytics is available but starts only after you consent. Google Analytics may use _ga and _ga_<identifier> cookies to distinguish visits and sessions. This website sets their lifetime to at most six months without rolling renewal. Rejecting analytics does not restrict access to content.'}
+        </p>
+        <p>
+          {cs
+            ? 'Souhlas odvoláte tlačítkem níže a volbou „Odmítnout analytiku“. Zastavíme další měření, odstraníme analytické cookies přístupné tomuto webu a obnovíme stránku bez analytického skriptu. Údaje odeslané před odvoláním tím nejsou zpětně vymazány.'
+            : 'To withdraw consent, use the button below and choose “Reject analytics”. We stop further measurement, remove analytics cookies accessible to this site and reload the page without the analytics script. Data sent before withdrawal is not retroactively deleted.'}
+        </p>
+        <button type="button" class="button" data-consent-open>
+          {copy[locale].footer.settings}
+        </button>
+        <noscript>
+          <p>
+            {cs
+              ? 'JavaScript je vypnutý, proto analytika neběží. Uloženou volbu můžete odstranit v nastavení dat webu ve svém prohlížeči.'
+              : 'JavaScript is disabled, so analytics is not running. You can clear any saved choice using your browser’s site-data settings.'}
+          </p>
+        </noscript>
+      </>
+    ) : (
+      <p class="notice">
+        {cs
+          ? 'Analytika je nyní vypnutá. Nenastavujeme analytické cookies ani neukládáme volbu souhlasu pro nové návštěvy, proto nezobrazujeme cookie lištu.'
+          : 'Analytics is currently disabled. We do not set analytics cookies or save consent choices for new visits, so no cookie banner is shown.'}
+      </p>
+    )}
+    <h2>{cs ? 'Nastavení prohlížeče' : 'Browser settings'}</h2>
+    <p>
+      {cs
+        ? 'Cookies i místní úložiště můžete odstranit v nastavení svého prohlížeče. Vymazání uložené volby znamená, že se vás při další návštěvě s dostupnou analytikou znovu zeptáme.'
+        : 'You can delete cookies and local storage in your browser settings. Clearing your saved choice means we will ask again on your next visit when analytics is available.'}{' '}
+      <a href={href('privacy', locale)}>{copy[locale].nav.privacy}</a>.
+    </p>
+  </>
+)}

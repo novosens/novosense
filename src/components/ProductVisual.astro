@@ -1,0 +1,172 @@
+---
+import { copy } from '../content/site';
+import Icon from './Icon.astro';
+import type { Locale } from '../lib/routes';
+interface Props {
+  kind: 'datahub' | 'tickets';
+  locale: Locale;
+  compact?: boolean;
+}
+const { kind, locale, compact = false } = Astro.props;
+const cs = locale === 'cs';
+---
+
+<figure class:list={['product-visual', `visual-${kind}`, { compact }]}>
+  {kind === 'datahub' ? (
+    <div class="data-screen" aria-hidden="true">
+      <div class="screen-top">
+        <span class="mini-brand">◈ DataHub</span>
+        <span class="screen-status">
+          <i></i>
+          {cs ? 'Přehled provozu' : 'Operations overview'}
+        </span>
+        <span class="screen-avatar">N</span>
+      </div>
+      <div class="data-body">
+        <div class="data-sidebar">
+          <span class="selected">▦</span>
+          <span>⌁</span>
+          <span>◎</span>
+          <span>◷</span>
+        </div>
+        <div class="data-main">
+          <div class="screen-heading">
+            <span>
+              {cs ? 'Všechno v souvislostech.' : 'Everything in context.'}
+            </span>
+            <span class="period">24 h</span>
+          </div>
+          <div class="metric-grid">
+            <div>
+              <small>{cs ? 'Zařízení' : 'Devices'}</small>
+              <strong>24</strong>
+            </div>
+            <div>
+              <small>{cs ? 'Měřicí body' : 'Monitoring points'}</small>
+              <strong>08</strong>
+            </div>
+            <div>
+              <small>{cs ? 'Dostupná data' : 'Data available'}</small>
+              <strong>
+                99<span>%</span>
+              </strong>
+            </div>
+          </div>
+          <div class="chart">
+            <div class="chart-label">
+              <span>{cs ? 'Průběh měření' : 'Measurement history'}</span>
+              <span class="chart-legend">
+                ● {cs ? 'Senzor 01' : 'Sensor 01'}
+              </span>
+            </div>
+            <svg viewBox="0 0 430 140" fill="none">
+              <defs>
+                <linearGradient
+                  id={`area-${compact}`}
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop stop-color="#6bac8b" stop-opacity=".35" />
+                  <stop offset="1" stop-color="#6bac8b" stop-opacity="0" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M0 30H430M0 65H430M0 100H430M0 135H430"
+                stroke="#e2e8e2"
+                stroke-dasharray="3 5"
+              />
+              <path
+                d="M0 100L20 95L40 107L60 87L80 92L100 56L120 67L140 42L160 53L180 50L200 69L220 64L240 77L260 40L280 48L300 20L320 34L340 27L360 51L380 43L400 56L430 26V140H0Z"
+                fill={`url(#area-${compact})`}
+              />
+              <path
+                d="M0 100L20 95L40 107L60 87L80 92L100 56L120 67L140 42L160 53L180 50L200 69L220 64L240 77L260 40L280 48L300 20L320 34L340 27L360 51L380 43L400 56L430 26"
+                stroke="#24513c"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <div class="chart-times">
+              <span>06:00</span>
+              <span>12:00</span>
+              <span>18:00</span>
+            </div>
+          </div>
+          <div class="data-location">
+            <span class="location-dot">◎</span>
+            <div>
+              <strong>{cs ? 'Areál / Sever' : 'Site / North'}</strong>
+              <small>
+                {cs
+                  ? 'Místo → měřicí bod → zařízení'
+                  : 'Place → monitoring point → device'}
+              </small>
+            </div>
+            <span class="location-line"></span>
+            <span class="live-label">{cs ? 'Propojeno' : 'Connected'}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div class="ticket-scene" aria-hidden="true">
+      <div class="ticket-orbit orbit-one"></div>
+      <div class="ticket-orbit orbit-two"></div>
+      <div class="event-ticket ticket-back">
+        <span>LIVE / 2026</span>
+      </div>
+      <div class="event-ticket ticket-front">
+        <div class="ticket-top">
+          <img src="/brand/dame-listky.svg" width="34" height="34" alt="" />
+          <span>Dáme lístky</span>
+          <span class="ticket-number">№ 001</span>
+        </div>
+        <div class="ticket-art">
+          <span class="ticket-art-ring"></span>
+          <span class="ticket-art-ring second"></span>
+          <span class="ticket-star">
+            <Icon name="spark" />
+          </span>
+          <span class="ticket-art-label">
+            LIVE
+            <br />
+            TOGETHER.
+          </span>
+        </div>
+        <div class="ticket-info">
+          <div>
+            <small>
+              {cs
+                ? 'JEDEN VEČER. TISÍC VZPOMÍNEK.'
+                : 'ONE NIGHT. A THOUSAND MEMORIES.'}
+            </small>
+            <strong>
+              {cs ? 'Večer pod hvězdami' : 'An evening under the stars'}
+            </strong>
+            <span>
+              {cs ? 'Letní scéna' : 'Summer stage'} <b>·</b> 19:00
+            </span>
+          </div>
+        </div>
+        <div class="ticket-tear"></div>
+        <div class="ticket-bottom">
+          <span>
+            {cs ? 'VAŠE MÍSTO V ZÁŽITKU' : 'YOUR PLACE IN THE EXPERIENCE'}
+          </span>
+          <span class="barcode"></span>
+        </div>
+      </div>
+      <div class="admission-badge">
+        <span>✓</span>
+        <div>
+          <strong>{cs ? 'Vstupenka ověřena' : 'Ticket validated'}</strong>
+          <small>{cs ? 'Užijte si svůj večer.' : 'Enjoy your evening.'}</small>
+        </div>
+      </div>
+    </div>
+  )}
+  <figcaption>{copy[locale].product.sample}</figcaption>
+</figure>

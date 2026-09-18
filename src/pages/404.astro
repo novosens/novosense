@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout locale="cs" page="home" notFound>
+  <section class="page-intro container not-found">
+    <p class="eyebrow">404 / NOVOSense</p>
+    <h1>Tady už cesta nevede.</h1>
+    <p class="lede">
+      Tuto stránku se nepodařilo najít. Zkuste začít na úvodní stránce.
+    </p>
+    <a class="button" href="/">
+      Zpět na úvod
+    </a>
+    <div lang="en" class="not-found-english">
+      <h2>Page not found.</h2>
+      <p>The page may have moved, or the address may be incorrect.</p>
+      <a class="quiet-link" href="/en/">
+        Go to the English homepage
+      </a>
+    </div>
+  </section>
+</BaseLayout>

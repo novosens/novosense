@@ -1,0 +1,45 @@
+---
+import { copy } from '../content/site';
+import { href, type Locale } from '../lib/routes';
+import { analytics } from '../lib/analytics';
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = copy[locale];
+---
+
+{analytics.enabled && (
+  <section
+    class="consent-panel"
+    data-consent-panel
+    data-measurement-id={analytics.measurementId}
+    aria-labelledby="consent-title"
+    hidden
+  >
+    <h2 id="consent-title">{t.consent.title}</h2>
+    <p>
+      {t.consent.text} <a href={href('cookies', locale)}>{t.nav.cookies}</a> ·{' '}
+      <a href={href('privacy', locale)}>{t.nav.privacy}</a>
+    </p>
+    <div class="consent-actions">
+      <button class="button" type="button" data-consent-choice="accepted">
+        {t.consent.accept}
+      </button>
+      <button
+        class="button button-outline"
+        type="button"
+        data-consent-choice="rejected"
+      >
+        {t.consent.reject}
+      </button>
+      <button type="button" class="text-button" data-consent-close>
+        {t.consent.close}
+      </button>
+    </div>
+  </section>
+)}
+<script>
+  import { initializeConsent } from '../scripts/consent';
+  initializeConsent();
+</script>

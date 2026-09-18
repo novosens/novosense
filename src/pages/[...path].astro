@@ -1,0 +1,418 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import ProductCards from '../components/ProductCards.astro';
+import ProductVisual from '../components/ProductVisual.astro';
+import Closing from '../components/Closing.astro';
+import LegalContent from '../components/LegalContent.astro';
+import { copy } from '../content/site';
+import { company } from '../content/company';
+import { href, pages, locales, type Locale, type Page } from '../lib/routes';
+export function getStaticPaths() {
+  return locales.flatMap((locale) =>
+    pages.map((page) => ({
+      params: {
+        path:
+          href(page, locale).replace(/^\//, '').replace(/\/$/, '') || undefined,
+      },
+      props: { locale, page },
+    })),
+  );
+}
+interface Props {
+  locale: Locale;
+  page: Page;
+}
+const { locale, page } = Astro.props;
+const t = copy[locale];
+const cs = locale === 'cs';
+const product = page === 'datahub' || page === 'tickets' ? t[page] : null;
+const mail = (subject: string) =>
+  `mailto:${company.email}?subject=${encodeURIComponent(subject)}`;
+---
+
+<BaseLayout locale={locale} page={page}>
+  {page === 'home' && (
+    <>
+      <section class="home-hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">
+              <span class="status-dot"></span>
+              {t.home.eyebrow}
+            </p>
+            <h1>
+              {t.home.title}
+              <br />
+              <span>{t.home.accent}</span>
+            </h1>
+            <p class="lede">{t.home.intro}</p>
+            <div class="actions">
+              <a class="button" href={href('products', locale)}>
+                {t.nav.products}
+              </a>
+              <a class="quiet-link" href={href('contact', locale)}>
+                {t.contact}
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+          <div class="connection-art" aria-hidden="true">
+            <div class="art-grid"></div>
+            <div class="art-orbit"></div>
+            <div class="art-orbit orbit-inner"></div>
+            <svg class="connection-lines" viewBox="0 0 500 460">
+              <path
+                d="M110 120H180L250 230H340L400 340M250 230V340H130M250 230V80H350"
+                fill="none"
+                stroke="#c4d4e6"
+                stroke-width="1.5"
+              />
+              <circle cx="110" cy="120" r="5" fill="#24513c" />
+              <circle cx="400" cy="340" r="5" fill="#a72d82" />
+              <circle cx="350" cy="80" r="4" fill="#0f81c7" />
+              <circle cx="130" cy="340" r="4" fill="#0f81c7" />
+            </svg>
+            <div class="art-core">
+              <img src="/favicon.svg" width="82" height="93" alt="" />
+            </div>
+            <div class="art-label label-data">
+              <span>◈</span>
+              <div>
+                <small>
+                  01 / {cs ? 'PROPOJUJEME DATA' : 'CONNECTING DATA'}
+                </small>
+                <strong>DataHub</strong>
+              </div>
+            </div>
+            <div class="art-label label-tickets">
+              <span>✳︎</span>
+              <div>
+                <small>
+                  02 / {cs ? 'PROPOJUJEME LIDI' : 'CONNECTING PEOPLE'}
+                </small>
+                <strong>Dáme lístky</strong>
+              </div>
+            </div>
+            <span class="art-coordinate">
+              49° N / 17° E<br />
+              IDEA → SOFTWARE
+            </span>
+          </div>
+        </div>
+        <div class="container hero-footnote">
+          <span>
+            {cs
+              ? 'VLASTNÍ PRODUKTY & VÝVOJ NA MÍRU'
+              : 'OUR OWN PRODUCTS & CUSTOM DEVELOPMENT'}
+          </span>
+          <span>
+            {cs ? 'Poznejte, co tvoříme' : 'Discover what we build'}{' '}
+            <span aria-hidden="true">↓</span>
+          </span>
+        </div>
+      </section>
+      <section class="section" id="products">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">01 / {t.nav.products}</p>
+            <div class="heading-grid">
+              <h2>{t.home.productTitle}</h2>
+              <p>{t.home.productIntro}</p>
+            </div>
+          </div>
+          <ProductCards locale={locale} />
+        </div>
+      </section>
+      <section class="section services">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">
+              02 / {cs ? 'Vývoj & integrace' : 'Development & integration'}
+            </p>
+            <div class="heading-grid">
+              <h2>{t.home.servicesTitle}</h2>
+              <p>{t.home.servicesIntro}</p>
+            </div>
+          </div>
+          <div class="service-grid">
+            {t.home.services.map((service, i) => (
+              <article>
+                <span class="service-number">0{i + 1}</span>
+                <h3>{service.title}</h3>
+                <p>{service.text}</p>
+              </article>
+            ))}
+          </div>
+          <a
+            class="quiet-link"
+            href={mail(cs ? 'Vývoj na míru' : 'Custom development')}
+          >
+            {t.contact}
+          </a>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container team-teaser">
+          <div class="team-mark" aria-hidden="true">
+            <span>2</span>
+            <i>+</i>
+          </div>
+          <div>
+            <p class="eyebrow">03 / {t.nav.about}</p>
+            <h2>{t.home.teamTitle}</h2>
+            <p>{t.home.teamText}</p>
+            <a class="quiet-link" href={href('about', locale)}>
+              {t.nav.about}
+            </a>
+          </div>
+        </div>
+      </section>
+      <Closing locale={locale} />
+    </>
+  )}
+  {page === 'products' && (
+    <>
+      <section class="page-intro container">
+        <p class="eyebrow">NOVOSense / {t.nav.products}</p>
+        <h1>{t.products.title}</h1>
+        <p class="lede">{t.products.intro}</p>
+      </section>
+      <section class="section section-topless">
+        <div class="container">
+          <ProductCards locale={locale} />
+        </div>
+      </section>
+      <Closing locale={locale} />
+    </>
+  )}
+  {product && (page === 'datahub' || page === 'tickets') && (
+    <>
+      <section class="product-hero">
+        <div class="container">
+          <a class="back-link" href={href('products', locale)}>
+            ← {t.product.back}
+          </a>
+          <div class="product-hero-grid">
+            <div>
+              <p class="eyebrow">{t.product.label}</p>
+              <div class="product-name">
+                {page === 'tickets' ? (
+                  <img
+                    src="/brand/dame-listky.svg"
+                    width="38"
+                    height="38"
+                    alt=""
+                  />
+                ) : (
+                  <span aria-hidden="true">◈</span>
+                )}
+                {product.name}
+              </div>
+              <h1>{product.headline}</h1>
+              <p class="lede">{product.summary}</p>
+              <div class="actions">
+                {page === 'tickets' && (
+                  <a class="button" href="https://damelistky.cz/">
+                    {cs ? 'Otevřít damelistky.cz' : 'Visit damelistky.cz'}
+                  </a>
+                )}
+                <a
+                  class={page === 'tickets' ? 'quiet-link' : 'button'}
+                  href={mail(product.cta)}
+                >
+                  {product.cta}
+                </a>
+              </div>
+            </div>
+            <ProductVisual kind={page} locale={locale} />
+          </div>
+        </div>
+      </section>
+      <section class="audience-strip">
+        <div class="container">
+          <p class="eyebrow">{t.product.audience}</p>
+          <p>{product.audience}</p>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">01 / {product.name}</p>
+            <h2>{t.product.capabilities}</h2>
+          </div>
+          <div class="feature-grid">
+            {product.features.map((feature, i) => (
+              <article>
+                <span class="feature-icon" aria-hidden="true">
+                  {page === 'tickets' ? (
+                    <Icon
+                      name={(['calendar', 'bag', 'ticket', 'scan'] as const)[i]}
+                    />
+                  ) : (
+                    <Icon
+                      name={(['pin', 'chart', 'bell', 'report'] as const)[i]}
+                    />
+                  )}
+                </span>
+                <h3>{feature.title}</h3>
+                <p>{feature.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section class="section workflow">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">
+              02 / {cs ? 'Jak to navazuje' : 'How it connects'}
+            </p>
+            <h2>{t.product.workflow}</h2>
+          </div>
+          <ol class="workflow-steps">
+            {product.steps.map((step, i) => (
+              <li>
+                <span>0{i + 1}</span>
+                <h3>{step}</h3>
+              </li>
+            ))}
+          </ol>
+          <a class="button" href={mail(product.cta)}>
+            {product.cta}
+          </a>
+        </div>
+      </section>
+      <Closing locale={locale} />
+    </>
+  )}
+  {page === 'about' && (
+    <>
+      <section class="page-intro container">
+        <p class="eyebrow">{t.about.eyebrow}</p>
+        <h1>{t.about.title}</h1>
+        <p class="lede">{t.about.intro}</p>
+      </section>
+      <section
+        class="section section-topless"
+        aria-label={cs ? 'Náš tým' : 'Our team'}
+      >
+        <div class="container people-grid">
+          {t.about.people.map((person) => (
+            <article class="person-card">
+              <div class="person-heading">
+                <img
+                  class="person-portrait"
+                  src={person.portrait}
+                  width="112"
+                  height="112"
+                  alt={person.name}
+                  decoding="async"
+                />
+                <div class="person-name">
+                  <h2>{person.name}</h2>
+                  <a
+                    class="person-link"
+                    href={person.linkedin}
+                    aria-label={`${person.name} ${cs ? 'na LinkedIn' : 'on LinkedIn'}`}
+                  >
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.049c.476-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286ZM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124ZM7.119 20.452H3.555V9h3.564v11.452ZM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003Z" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+              <p>{person.bio}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+      <Closing locale={locale} />
+    </>
+  )}
+  {page === 'contact' && (
+    <>
+      <section class="page-intro container">
+        <p class="eyebrow">NOVOSense / {t.nav.contact}</p>
+        <h1>{t.contactPage.title}</h1>
+        <p class="lede">{t.contactPage.intro}</p>
+      </section>
+      <section class="section section-topless">
+        <div class="container contact-grid">
+          <div class="contact-main">
+            <div class="contact-method">
+              <span class="eyebrow">{t.contactPage.email}</span>
+              <a href={`mailto:${company.email}`}>{company.email}</a>
+            </div>
+            <div class="contact-method">
+              <span class="eyebrow">{t.contactPage.phone}</span>
+              <a href={company.phoneHref}>{company.phone}</a>
+            </div>
+            <p>{t.contactPage.prompt}</p>
+            <div class="contact-topics">
+              {(['datahub', 'tickets'] as const).map((key) => (
+                <a href={mail(t[key].cta)}>{t[key].name}</a>
+              ))}
+              <a href={mail(cs ? 'Vývoj na míru' : 'Custom development')}>
+                {cs ? 'Vlastní projekt' : 'Custom project'}
+              </a>
+            </div>
+          </div>
+          <aside class="company-panel">
+            <h2>{t.contactPage.details}</h2>
+            <strong>{company.legalName}</strong>
+            <dl>
+              <dt>{t.contactPage.address}</dt>
+              <dd>
+                {company.registeredOffice}
+                <br />
+                {cs ? 'Česká republika' : 'Czech Republic'}
+              </dd>
+              <dt>{t.contactPage.registration}</dt>
+              <dd>{company.companyId}</dd>
+            </dl>
+            <p>
+              {cs
+                ? 'Zapsaná v obchodním rejstříku vedeném u Krajského soudu v Brně, oddíl C, vložka 152325.'
+                : 'Registered in the Commercial Register maintained by the Regional Court in Brno, Section C, File 152325.'}
+            </p>
+            <a href={href('legal', locale)}>{t.nav.legal}</a>
+          </aside>
+        </div>
+      </section>
+    </>
+  )}
+  {(['legal', 'privacy', 'cookies'] as Page[]).includes(page) && (
+    <section class="section">
+      <div class="container legal-grid">
+        <aside class="legal-nav">
+          <p class="eyebrow">NOVOSense / {t.footer.privacy}</p>
+          <nav aria-label={t.footer.privacy}>
+            {(['legal', 'privacy', 'cookies'] as Page[]).map((key) => (
+              <a
+                href={href(key, locale)}
+                aria-current={page === key ? 'page' : undefined}
+              >
+                {t.nav[key]}
+              </a>
+            ))}
+          </nav>
+        </aside>
+        <article class="prose">
+          <h1>{t.meta[page].title}</h1>
+          <LegalContent
+            locale={locale}
+            page={page as 'legal' | 'privacy' | 'cookies'}
+          />
+        </article>
+      </div>
+    </section>
+  )}
+</BaseLayout>

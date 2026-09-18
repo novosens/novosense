@@ -1,0 +1,26 @@
+---
+import { copy } from '../content/site';
+import { href, type Locale } from '../lib/routes';
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = copy[locale];
+---
+
+<section class="closing">
+  <div class="container closing-inner">
+    <div>
+      <p class="eyebrow">
+        {locale === 'cs'
+          ? 'Začíná to rozhovorem'
+          : 'It starts with a conversation'}
+      </p>
+      <h2>{t.closing.title}</h2>
+      <p>{t.closing.text}</p>
+    </div>
+    <a class="button button-light" href={href('contact', locale)}>
+      {t.contact}
+    </a>
+  </div>
+</section>

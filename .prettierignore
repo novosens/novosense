@@ -1,0 +1,8 @@
+dist
+dist-analytics
+node_modules
+pnpm-lock.yaml
+public
+playwright-report
+test-results
+.astro

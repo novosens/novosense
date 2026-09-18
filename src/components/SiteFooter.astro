@@ -1,17 +1,56 @@
 ---
-import { company } from "../content/company";
+import { company } from '../content/company';
+import { copy } from '../content/site';
+import { href, type Locale, type Page } from '../lib/routes';
+import { analytics } from '../lib/analytics';
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = copy[locale];
 ---
 
 <footer class="site-footer">
-  <p>
-    © {new Date().getFullYear()} {company.legalName ?? company.name}
-  </p>
-
-  <nav aria-label="Footer navigation">
-    <div class="footer-links">
-      <a href="/privacy/">Privacy</a>
-      <a href="/legal/">Legal</a>
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a class="wordmark" href={href('home', locale)}>
+        NOVO<span class="wordmark-light">Sense</span>
+      </a>
+      <p>{t.footer.text}</p>
       <a href={`mailto:${company.email}`}>{company.email}</a>
     </div>
-  </nav>
+    <nav aria-label={t.nav.products}>
+      <h2>{t.nav.products}</h2>
+      {(['datahub', 'tickets'] as Page[]).map((key) => (
+        <a href={href(key, locale)}>{t.nav[key]}</a>
+      ))}
+    </nav>
+    <nav aria-label={t.footer.company}>
+      <h2>{t.footer.company}</h2>
+      {(['about', 'contact'] as Page[]).map((key) => (
+        <a href={href(key, locale)}>{t.nav[key]}</a>
+      ))}
+    </nav>
+    <nav aria-label={t.footer.privacy}>
+      <h2>{t.footer.privacy}</h2>
+      {(['legal', 'privacy', 'cookies'] as Page[]).map((key) => (
+        <a href={href(key, locale)}>{t.nav[key]}</a>
+      ))}
+      {analytics.enabled && (
+        <button type="button" class="text-button" data-consent-open>
+          {t.footer.settings}
+        </button>
+      )}
+    </nav>
+  </div>
+  <div class="container footer-bottom">
+    <span>
+      © {new Date().getFullYear()} {company.legalName}
+    </span>
+    <span>
+      {locale === 'cs'
+        ? 'Vytvořeno s rozmyslem. V Česku.'
+        : 'Thoughtfully built. In Czechia.'}
+    </span>
+  </div>
 </footer>
